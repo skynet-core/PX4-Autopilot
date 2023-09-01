@@ -55,7 +55,7 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
 if (EXISTS "${PX4_SOURCE_DIR}/msg/tools/urtps_bridge_topics.yaml")
 	set(config_rtps_send_topics)
 	execute_process(
-		COMMAND ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/msg/tools/uorb_rtps_classifier.py -sa
+		COMMAND ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/msg/tools/uorb_rtps_classifier.py -sa
 		OUTPUT_VARIABLE config_rtps_send_topics
 	)
 	set(config_rtps_send_alias_topics "")
@@ -71,7 +71,7 @@ if (EXISTS "${PX4_SOURCE_DIR}/msg/tools/urtps_bridge_topics.yaml")
 
 	set(config_rtps_receive_topics)
 	execute_process(
-		COMMAND ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/msg/tools/uorb_rtps_classifier.py -ra
+		COMMAND ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/msg/tools/uorb_rtps_classifier.py -ra
 		OUTPUT_VARIABLE config_rtps_receive_topics
 	)
 	set(config_rtps_receive_alias_topics "")
@@ -134,7 +134,7 @@ if (GENERATE_RTPS_BRIDGE)
 
 	# Generate uORB serialization headers
 	add_custom_command(OUTPUT ${uorb_headers_microcdr}
-		COMMAND ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/msg/tools/px_generate_uorb_topic_files.py
+		COMMAND ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/msg/tools/px_generate_uorb_topic_files.py
 			--headers
 			-f ${send_topic_files} ${receive_topic_files}
 			-i ${PX4_SOURCE_DIR}/msg/
@@ -154,7 +154,7 @@ if (GENERATE_RTPS_BRIDGE)
 
 	# Generate uORB serialization sources
 	add_custom_command(OUTPUT ${uorb_sources_microcdr}
-		COMMAND ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/msg/tools/px_generate_uorb_topic_files.py
+		COMMAND ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/msg/tools/px_generate_uorb_topic_files.py
 			--sources
 			-f ${send_topic_files} ${receive_topic_files}
 			-i ${PX4_SOURCE_DIR}/msg/

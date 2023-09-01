@@ -99,7 +99,7 @@
 #
 #=============================================================================
 
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 set(PX4_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE FILEPATH "PX4 source directory" FORCE)
 set(PX4_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE FILEPATH "PX4 binary directory" FORCE)
@@ -153,21 +153,21 @@ set(config_kernel_list)
 # If using catkin, Python 2 is found since it points
 # to the Python libs installed with the ROS distro
 if (NOT CATKIN_DEVEL_PREFIX)
-	find_package(PythonInterp 3)
+	find_package(Python3 REQUIRED COMPONENTS Interpreter)
 	# We have a custom error message to tell users how to install python3.
-	if (NOT PYTHONINTERP_FOUND)
+	if (NOT Python3_Interpreter_FOUND)
 		message(FATAL_ERROR "Python 3 not found. Please install Python 3:\n"
 			"    Ubuntu: sudo apt install python3 python3-dev python3-pip\n"
 			"    macOS: brew install python")
 	endif()
 else()
-	find_package(PythonInterp REQUIRED)
+	find_package(Python REQUIRED COMPONENTS Interpreter)
 endif()
 
 option(PYTHON_COVERAGE "Python code coverage" OFF)
 if(PYTHON_COVERAGE)
 	message(STATUS "python coverage enabled")
-	set(PYTHON_EXECUTABLE coverage run -p)
+	set(Python3_EXECUTABLE coverage run -p)
 endif()
 
 include(px4_config)
@@ -457,7 +457,7 @@ foreach(module ${config_module_list})
 endforeach()
 
 add_custom_command(OUTPUT ${uorb_graph_config}
-	COMMAND ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/uorb_graph/create.py
+	COMMAND ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/uorb_graph/create.py
 		${graph_module_list} --src-path src/lib
 		--merge-depends
 		--exclude-path src/examples
@@ -483,7 +483,7 @@ add_custom_target(size
 
 # install python requirements using configured python
 add_custom_target(install_python_requirements
-	COMMAND ${PYTHON_EXECUTABLE} -m pip install --requirement ${PX4_SOURCE_DIR}/Tools/setup/requirements.txt
+	COMMAND ${Python3_EXECUTABLE} -m pip install --requirement ${PX4_SOURCE_DIR}/Tools/setup/requirements.txt
 	DEPENDS ${PX4_SOURCE_DIR}/Tools/setup/requirements.txt
 	USES_TERMINAL
 )

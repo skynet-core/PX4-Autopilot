@@ -1,20 +1,20 @@
 set(BOARD_DEFCONFIG ${PX4_CONFIG_FILE} CACHE FILEPATH "path to defconfig" FORCE)
 set(BOARD_CONFIG ${PX4_BINARY_DIR}/boardconfig CACHE FILEPATH "path to config" FORCE)
 
-execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import menuconfig" RESULT_VARIABLE ret)
+execute_process(COMMAND ${Python3_EXECUTABLE} -c "import menuconfig" RESULT_VARIABLE ret)
 if(ret EQUAL "1")
     message(FATAL_ERROR "kconfiglib is not installed or not in PATH\n"
-                        "please install using \"pip3 install kconfiglib\"\n")
+                        "please install using \"~\"\n")
 endif()
 
-set(MENUCONFIG_PATH ${PYTHON_EXECUTABLE} -m menuconfig CACHE INTERNAL "menuconfig program" FORCE)
-set(GUICONFIG_PATH ${PYTHON_EXECUTABLE} -m guiconfig CACHE INTERNAL "guiconfig program" FORCE)
-set(DEFCONFIG_PATH ${PYTHON_EXECUTABLE} -m defconfig CACHE INTERNAL "defconfig program" FORCE)
-set(SAVEDEFCONFIG_PATH ${PYTHON_EXECUTABLE} -m savedefconfig CACHE INTERNAL "savedefconfig program" FORCE)
-set(GENCONFIG_PATH ${PYTHON_EXECUTABLE} -m genconfig CACHE INTERNAL "genconfig program" FORCE)
+set(MENUCONFIG_PATH ${Python3_EXECUTABLE} -m menuconfig CACHE INTERNAL "menuconfig program" FORCE)
+set(GUICONFIG_PATH ${Python3_EXECUTABLE} -m guiconfig CACHE INTERNAL "guiconfig program" FORCE)
+set(DEFCONFIG_PATH ${Python3_EXECUTABLE} -m defconfig CACHE INTERNAL "defconfig program" FORCE)
+set(SAVEDEFCONFIG_PATH ${Python3_EXECUTABLE} -m savedefconfig CACHE INTERNAL "savedefconfig program" FORCE)
+set(GENCONFIG_PATH ${Python3_EXECUTABLE} -m genconfig CACHE INTERNAL "genconfig program" FORCE)
 
 set(COMMON_KCONFIG_ENV_SETTINGS
-	PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+	Python3_EXECUTABLE=${Python3_EXECUTABLE}
 	KCONFIG_CONFIG=${BOARD_CONFIG}
 	# Set environment variables so that Kconfig can prune Kconfig source
 	# files for other architectures
@@ -43,7 +43,7 @@ if(EXISTS ${BOARD_DEFCONFIG})
     else()
         # Generate boardconfig from default.px4board and {label}.px4board
         execute_process(COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS}
-                        ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/kconfig/merge_config.py Kconfig ${BOARD_CONFIG} ${PX4_BOARD_DIR}/default.px4board ${BOARD_DEFCONFIG}
+                        ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/kconfig/merge_config.py Kconfig ${BOARD_CONFIG} ${PX4_BOARD_DIR}/default.px4board ${BOARD_DEFCONFIG}
                         WORKING_DIRECTORY ${PX4_SOURCE_DIR}
                         OUTPUT_VARIABLE DUMMY_RESULTS)
     endif()
@@ -341,9 +341,9 @@ if(EXISTS ${BOARD_DEFCONFIG})
         add_definitions( ${COMPILE_DEFINITIONS})
 	endif()
 
-	if(LINUX)
-        add_definitions( "-D__PX4_LINUX" )
-	endif()
+	# if(LINUX)
+    #     add_definitions( "-D__PX4_LINUX" )
+	# endif()
 
 	if(LOCKSTEP)
         set(ENABLE_LOCKSTEP_SCHEDULER yes)
@@ -402,7 +402,7 @@ else()
         ${COMMON_KCONFIG_ENV_SETTINGS}
         ${MENUCONFIG_PATH} Kconfig
         COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS} ${SAVEDEFCONFIG_PATH}
-        COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS} ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/kconfig/diffconfig.py -m ${PX4_BOARD_DIR}/default.px4board defconfig > ${BOARD_DEFCONFIG}
+        COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS} ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/kconfig/diffconfig.py -m ${PX4_BOARD_DIR}/default.px4board defconfig > ${BOARD_DEFCONFIG}
         COMMAND ${CMAKE_COMMAND} -E remove defconfig
         COMMAND ${CMAKE_COMMAND} -E remove ${PX4_BINARY_DIR}/NuttX/apps_copy.stamp
         WORKING_DIRECTORY ${PX4_SOURCE_DIR}
@@ -415,7 +415,7 @@ else()
         ${COMMON_KCONFIG_ENV_SETTINGS}
         ${GUICONFIG_PATH} Kconfig
         COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS} ${SAVEDEFCONFIG_PATH}
-        COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS} ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/kconfig/diffconfig.py -m ${PX4_BOARD_DIR}/default.px4board defconfig > ${BOARD_DEFCONFIG}
+        COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS} ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/kconfig/diffconfig.py -m ${PX4_BOARD_DIR}/default.px4board defconfig > ${BOARD_DEFCONFIG}
         COMMAND ${CMAKE_COMMAND} -E remove defconfig
         COMMAND ${CMAKE_COMMAND} -E remove ${PX4_BINARY_DIR}/NuttX/apps_copy.stamp
         WORKING_DIRECTORY ${PX4_SOURCE_DIR}

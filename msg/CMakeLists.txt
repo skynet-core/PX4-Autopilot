@@ -287,7 +287,7 @@ set(msg_files ${msg_files} PARENT_SCOPE)
 
 # Generate uORB headers
 add_custom_command(OUTPUT ${uorb_headers}
-	COMMAND ${PYTHON_EXECUTABLE} tools/px_generate_uorb_topic_files.py
+	COMMAND ${Python3_EXECUTABLE} tools/px_generate_uorb_topic_files.py
 		--headers
 		-f ${msg_files}
 		-i ${CMAKE_CURRENT_SOURCE_DIR}
@@ -309,7 +309,7 @@ add_custom_command(OUTPUT ${uorb_headers}
 add_custom_target(uorb_headers DEPENDS ${uorb_headers})
 
 add_custom_command(OUTPUT ${uorb_ucdr_headers}
-	COMMAND ${PYTHON_EXECUTABLE} tools/px_generate_uorb_topic_files.py
+	COMMAND ${Python3_EXECUTABLE} tools/px_generate_uorb_topic_files.py
 		--headers
 		-f ${msg_files}
 		-i ${CMAKE_CURRENT_SOURCE_DIR}
@@ -331,7 +331,7 @@ add_custom_target(uorb_ucdr_headers DEPENDS ${uorb_ucdr_headers})
 
 # Generate uORB sources
 add_custom_command(OUTPUT ${uorb_sources}
-	COMMAND ${PYTHON_EXECUTABLE} tools/px_generate_uorb_topic_files.py
+	COMMAND ${Python3_EXECUTABLE} tools/px_generate_uorb_topic_files.py
 		--sources
 		-f ${msg_files}
 		-i ${CMAKE_CURRENT_SOURCE_DIR}

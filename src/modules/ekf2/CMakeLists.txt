@@ -45,7 +45,7 @@ px4_add_module(
 	PRIORITY
 		"SCHED_PRIORITY_MAX - 18" # max priority below high priority WQ threads
 	STACK_MAX
-		3600
+		3700
 	SRCS
 		EKF/airspeed_fusion.cpp
 		EKF/baro_bias_estimator.cpp

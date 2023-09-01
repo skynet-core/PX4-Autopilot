@@ -66,12 +66,12 @@ set(MIXER_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/geometries/tools)
 # generate mixers and normalize
 add_custom_command(
 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mixer_multirotor.generated.h
-	COMMAND ${PYTHON_EXECUTABLE} ${MIXER_TOOLS}/px_generate_mixers.py -f ${geometries_list} -o mixer_multirotor.generated.h
+	COMMAND ${Python3_EXECUTABLE} ${MIXER_TOOLS}/px_generate_mixers.py -f ${geometries_list} -o mixer_multirotor.generated.h
 	DEPENDS ${MIXER_TOOLS}/px_generate_mixers.py ${geometries_list}
 	)
 add_custom_command(
 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mixer_multirotor_normalized.generated.h
-	COMMAND ${PYTHON_EXECUTABLE} ${MIXER_TOOLS}/px_generate_mixers.py --normalize -f ${geometries_list} -o mixer_multirotor_normalized.generated.h
+	COMMAND ${Python3_EXECUTABLE} ${MIXER_TOOLS}/px_generate_mixers.py --normalize -f ${geometries_list} -o mixer_multirotor_normalized.generated.h
 	DEPENDS ${MIXER_TOOLS}/px_generate_mixers.py ${geometries_list}
 	)
 add_custom_target(mixer_gen DEPENDS mixer_multirotor.generated.h ${CMAKE_CURRENT_BINARY_DIR}/mixer_multirotor_normalized.generated.h)
@@ -79,7 +79,7 @@ add_custom_target(mixer_gen DEPENDS mixer_multirotor.generated.h ${CMAKE_CURRENT
 # 6DOF mixers
 add_custom_command(
 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mixer_multirotor_6dof.generated.h
-	COMMAND ${PYTHON_EXECUTABLE} ${MIXER_TOOLS}/px_generate_mixers.py --sixdof -f ${geometries_list} -o mixer_multirotor_6dof.generated.h
+	COMMAND ${Python3_EXECUTABLE} ${MIXER_TOOLS}/px_generate_mixers.py --sixdof -f ${geometries_list} -o mixer_multirotor_6dof.generated.h
 	DEPENDS ${MIXER_TOOLS}/px_generate_mixers.py ${geometries_list}
 	)
 add_custom_target(mixer_gen_6dof DEPENDS mixer_multirotor_6dof.generated.h)
@@ -107,7 +107,7 @@ if(BUILD_TESTING)
 	target_link_libraries(test_mixer_multirotor PRIVATE MixerBase)
 
 	add_test(NAME mixer_multirotor
-		COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mixer_multirotor.py --test --mixer-multirotor-binary $<TARGET_FILE:test_mixer_multirotor>
+		COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mixer_multirotor.py --test --mixer-multirotor-binary $<TARGET_FILE:test_mixer_multirotor>
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 	)
 
