@@ -166,8 +166,8 @@ else
 endif
 
 # Pick up specific Python path if set
-ifdef Python3_EXECUTABLE
-	CMAKE_ARGS += -DPython3_EXECUTABLE=${Python3_EXECUTABLE}
+ifdef PYTHON_EXECUTABLE
+	CMAKE_ARGS += -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
 endif
 
 # Check if the microRTPS agent is to be built

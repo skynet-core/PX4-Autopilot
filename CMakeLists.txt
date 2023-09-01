@@ -160,6 +160,7 @@ if (NOT CATKIN_DEVEL_PREFIX)
 			"    Ubuntu: sudo apt install python3 python3-dev python3-pip\n"
 			"    macOS: brew install python")
 	endif()
+	set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
 else()
 	find_package(Python REQUIRED COMPONENTS Interpreter)
 endif()
@@ -167,7 +168,7 @@ endif()
 option(PYTHON_COVERAGE "Python code coverage" OFF)
 if(PYTHON_COVERAGE)
 	message(STATUS "python coverage enabled")
-	set(Python3_EXECUTABLE coverage run -p)
+	set(PYTHON_EXECUTABLE coverage run -p)
 endif()
 
 include(px4_config)
@@ -457,7 +458,7 @@ foreach(module ${config_module_list})
 endforeach()
 
 add_custom_command(OUTPUT ${uorb_graph_config}
-	COMMAND ${Python3_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/uorb_graph/create.py
+	COMMAND ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/uorb_graph/create.py
 		${graph_module_list} --src-path src/lib
 		--merge-depends
 		--exclude-path src/examples
@@ -483,7 +484,7 @@ add_custom_target(size
 
 # install python requirements using configured python
 add_custom_target(install_python_requirements
-	COMMAND ${Python3_EXECUTABLE} -m pip install --requirement ${PX4_SOURCE_DIR}/Tools/setup/requirements.txt
+	COMMAND ${PYTHON_EXECUTABLE} -m pip install --requirement ${PX4_SOURCE_DIR}/Tools/setup/requirements.txt
 	DEPENDS ${PX4_SOURCE_DIR}/Tools/setup/requirements.txt
 	USES_TERMINAL
 )
